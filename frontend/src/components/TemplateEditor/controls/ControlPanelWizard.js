@@ -4,12 +4,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
+  ActionList,
+  ActionListGroup,
+  ActionListItem,
   Button,
   Icon,
   Title,
   Stack,
   StackItem,
-  useWizardContext,
   WizardFooterWrapper,
   WizardStep,
   Wizard,
@@ -275,7 +277,7 @@ class ControlPanelWizard extends React.Component {
                   spinnerAriaValueText={isWorking ? i18n('Processing') : undefined}
                   onClick={!isWorking ? validateNextStep.bind(null, activeStep, goToNextStep) : noop}
                 >
-                  {processingLabel || activeStep.control.nextButtonLabel || i18n('Next')}
+                  {processingLabel || activeStep.component.nextButtonLabel || i18n('Next')}
                 </Button>
               </ActionListItem>
               <ActionListItem>
@@ -315,10 +317,12 @@ class ControlPanelWizard extends React.Component {
         startAtStep={startAtStep}
         footer={CustomFooter}
       >
-        {steps.map(({ title, content }) => {
-          ;<WizardStep id={title.id} name={title.id}>
-            {content}
-          </WizardStep>
+        {steps.map(({ id, name, component }) => {
+          return (
+            <WizardStep id={id} key={id} name={name}>
+              {component}
+            </WizardStep>
+          )
         })}
       </Wizard>
     )
